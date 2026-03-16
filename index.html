@@ -2202,6 +2202,587 @@
       });
     });
   </script>
+
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  DUNEAI — PATCH: ContactModal                               ║
+  ║  File: components/ContactModal.html                         ║
+  ║                                                             ║
+  ║  HOW TO ADD TO YOUR EXISTING CODE:                          ║
+  ║  1. Paste the HTML block just before your </body> tag       ║
+  ║  2. The JS auto-wires to ALL "Dune With Us" buttons         ║
+  ║  3. No other files need to change                           ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<!-- ── Overlay backdrop ── -->
+<div id="contact-overlay" class="cm-overlay" onclick="closeContactModal()"></div>
+
+<!-- ── Modal ── -->
+<div id="contact-modal" class="cm-modal" role="dialog" aria-modal="true">
+
+  <button class="cm-close" onclick="closeContactModal()" aria-label="Close">
+    <span></span><span></span>
+  </button>
+
+  <!-- LEFT sidebar -->
+  <div class="cm-left">
+    <div>
+      <div class="cm-logo"><div class="cm-logo-dot"></div>DUNE<span>AI</span></div>
+      <p class="cm-left-tagline">Building Intelligence<br>From The Future</p>
+    </div>
+    <div class="cm-left-info">
+      <div class="cm-info-item"><div class="cm-info-icon">⚡</div><div><div class="cm-info-label">Response Time</div><div class="cm-info-value">Within 24 hours</div></div></div>
+      <div class="cm-info-item"><div class="cm-info-icon">🔒</div><div><div class="cm-info-label">Confidentiality</div><div class="cm-info-value">NDA available on request</div></div></div>
+      <div class="cm-info-item"><div class="cm-info-icon">🌍</div><div><div class="cm-info-label">We Work With</div><div class="cm-info-value">Startups · SMBs · Enterprises</div></div></div>
+      <div class="cm-info-item"><div class="cm-info-icon">🤖</div><div><div class="cm-info-label">Specialisation</div><div class="cm-info-value">AI Agents · ML · SaaS · Automation</div></div></div>
+    </div>
+    <div class="cm-orb-wrap">
+      <div class="cm-orb-ring r1"></div>
+      <div class="cm-orb-ring r2"></div>
+      <div class="cm-orb-ring r3"></div>
+      <div class="cm-orb-core"><div class="cm-orb-text">DUNE<br>AI</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT form panel -->
+  <div class="cm-right">
+
+    <!-- Step progress bar -->
+    <div class="cm-steps" id="cm-steps">
+      <div class="cm-step active" data-step="1"><div class="cm-step-num">01</div><div class="cm-step-label">About You</div></div>
+      <div class="cm-step-line"></div>
+      <div class="cm-step" data-step="2"><div class="cm-step-num">02</div><div class="cm-step-label">Your Project</div></div>
+      <div class="cm-step-line"></div>
+      <div class="cm-step" data-step="3"><div class="cm-step-num">03</div><div class="cm-step-label">Details</div></div>
+    </div>
+
+    <!-- ══ STEP 1: About You ══ -->
+    <div class="cm-form-step active" id="step-1">
+      <div class="cm-step-header">
+        <div class="cm-step-tag">Step 01</div>
+        <h3 class="cm-step-title">Who Are You?</h3>
+        <p class="cm-step-sub">Let's start with the basics — tell us a bit about yourself.</p>
+      </div>
+      <div class="cm-fields">
+        <div class="cm-field-row">
+          <div class="cm-field">
+            <label class="cm-label" for="f-name">Full Name <span class="req">*</span></label>
+            <input class="cm-input" id="f-name" type="text" placeholder="Sahil Khan" autocomplete="name" />
+          </div>
+          <div class="cm-field">
+            <label class="cm-label" for="f-email">Email Address <span class="req">*</span></label>
+            <input class="cm-input" id="f-email" type="email" placeholder="you@company.com" autocomplete="email" />
+          </div>
+        </div>
+        <div class="cm-field-row">
+          <div class="cm-field">
+            <label class="cm-label" for="f-company">Company / Startup</label>
+            <input class="cm-input" id="f-company" type="text" placeholder="Acme Corp" />
+          </div>
+          <div class="cm-field">
+            <label class="cm-label" for="f-role">Your Role</label>
+            <input class="cm-input" id="f-role" type="text" placeholder="Founder / CTO / PM" />
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="f-heard">How did you hear about DuneAI?</label>
+          <div class="cm-select-wrap">
+            <select class="cm-input cm-select" id="f-heard">
+              <option value="" disabled selected>Select an option</option>
+              <option>Google / Search</option>
+              <option>LinkedIn</option>
+              <option>Twitter / X</option>
+              <option>Referral from a friend</option>
+              <option>GitHub</option>
+              <option>Other</option>
+            </select>
+            <span class="cm-select-arrow">▾</span>
+          </div>
+        </div>
+      </div>
+      <div class="cm-nav-row">
+        <div></div>
+        <button class="cm-btn-next" onclick="goStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2: Your Project ══ -->
+    <div class="cm-form-step" id="step-2">
+      <div class="cm-step-header">
+        <div class="cm-step-tag">Step 02</div>
+        <h3 class="cm-step-title">Your Project</h3>
+        <p class="cm-step-sub">What are you looking to build with DuneAI?</p>
+      </div>
+      <div class="cm-fields">
+        <div class="cm-field">
+          <label class="cm-label">Service You Need <span class="req">*</span></label>
+          <div class="cm-service-grid">
+            <div class="cm-service-chip" onclick="selectService(this)"><span>🤖</span> AI Agents</div>
+            <div class="cm-service-chip" onclick="selectService(this)"><span>🧠</span> ML Solutions</div>
+            <div class="cm-service-chip" onclick="selectService(this)"><span>⚡</span> SaaS Product</div>
+            <div class="cm-service-chip" onclick="selectService(this)"><span>🔁</span> Automation</div>
+            <div class="cm-service-chip" onclick="selectService(this)"><span>🚀</span> Full AI App</div>
+            <div class="cm-service-chip" onclick="selectService(this)"><span>🎯</span> AI Consulting</div>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="f-budget">Estimated Budget <span class="req">*</span></label>
+          <div class="cm-select-wrap">
+            <select class="cm-input cm-select" id="f-budget">
+              <option value="" disabled selected>Select your budget range</option>
+              <option>Under $2,000</option>
+              <option>$2,000 – $5,000</option>
+              <option>$5,000 – $15,000</option>
+              <option>$15,000 – $50,000</option>
+              <option>$50,000+</option>
+              <option>Not sure yet — let's talk</option>
+            </select>
+            <span class="cm-select-arrow">▾</span>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="f-timeline">Preferred Timeline</label>
+          <div class="cm-select-wrap">
+            <select class="cm-input cm-select" id="f-timeline">
+              <option value="" disabled selected>When do you need this?</option>
+              <option>ASAP — within 2 weeks</option>
+              <option>1 month</option>
+              <option>1–3 months</option>
+              <option>3–6 months</option>
+              <option>Flexible / No rush</option>
+            </select>
+            <span class="cm-select-arrow">▾</span>
+          </div>
+        </div>
+      </div>
+      <div class="cm-nav-row">
+        <button class="cm-btn-back" onclick="goStep(1)">← Back</button>
+        <button class="cm-btn-next" onclick="goStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3: Details ══ -->
+    <div class="cm-form-step" id="step-3">
+      <div class="cm-step-header">
+        <div class="cm-step-tag">Step 03</div>
+        <h3 class="cm-step-title">Tell Us Everything</h3>
+        <p class="cm-step-sub">The more detail you share, the sharper our proposal will be.</p>
+      </div>
+      <div class="cm-fields">
+        <div class="cm-field">
+          <label class="cm-label" for="f-desc">Project Description <span class="req">*</span></label>
+          <textarea class="cm-input cm-textarea" id="f-desc" rows="4"
+            placeholder="Describe your project — the problem you're solving, your current stack, expected outcomes, and any specific requirements..."></textarea>
+          <div class="cm-char-count"><span id="char-count">0</span> / 1000</div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="f-data">Do you have existing data or systems?</label>
+          <div class="cm-select-wrap">
+            <select class="cm-input cm-select" id="f-data">
+              <option value="" disabled selected>Select an option</option>
+              <option>Yes — data + existing system</option>
+              <option>Yes — data only, no system yet</option>
+              <option>No — starting from scratch</option>
+              <option>Not sure yet</option>
+            </select>
+            <span class="cm-select-arrow">▾</span>
+          </div>
+        </div>
+        <div class="cm-field">
+          <label class="cm-label" for="f-whatsapp">
+            WhatsApp <span class="req-opt">(optional — for quick connect)</span>
+          </label>
+          <input class="cm-input" id="f-whatsapp" type="tel" placeholder="+91 98765 43210" autocomplete="tel" />
+        </div>
+        <div class="cm-privacy-note">
+          <span>🔒</span>
+          Your information is 100% confidential. We never share client data. NDA available on request.
+        </div>
+      </div>
+      <div class="cm-nav-row">
+        <button class="cm-btn-back" onclick="goStep(2)">← Back</button>
+        <button class="cm-btn-submit" id="cm-submit-btn" onclick="submitForm()">
+          <span id="submit-label">Dune With Us →</span>
+          <span id="submit-loader" style="display:none;align-items:center;gap:8px;">
+            <span class="cm-spinner"></span> Sending...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ SUCCESS: Dune-branded feedback screen ══ -->
+    <div class="cm-form-step" id="step-success">
+      <div class="cm-success-wrap">
+        <div class="cm-success-orb">
+          <div class="cm-success-ring sr1"></div>
+          <div class="cm-success-ring sr2"></div>
+          <div class="cm-success-emoji">🌑</div>
+        </div>
+        <div class="cm-success-tag">Transmission Received</div>
+        <h3 class="cm-success-title">
+          You're Now<br>
+          <span class="success-gold">Duning With Us.</span>
+        </h3>
+        <p class="cm-success-msg">
+          The desert has received your signal, <strong id="success-name">explorer</strong>.<br>
+          Our intelligence systems are already processing your brief.
+        </p>
+        <div class="cm-success-cards">
+          <div class="cm-success-card">
+            <div class="cm-sc-icon">⚡</div>
+            <div class="cm-sc-title">What's Next</div>
+            <div class="cm-sc-body">A DuneAI strategist will reach out within <strong>24 hours</strong> to schedule your first call.</div>
+          </div>
+          <div class="cm-success-card">
+            <div class="cm-sc-icon">📋</div>
+            <div class="cm-sc-title">Your Brief</div>
+            <div class="cm-sc-body">We'll review your project details and prepare a tailored AI roadmap before the call.</div>
+          </div>
+          <div class="cm-success-card">
+            <div class="cm-sc-icon">🤝</div>
+            <div class="cm-sc-title">First Call</div>
+            <div class="cm-sc-body">Free 45-min strategy session — zero pressure, pure value. You leave with clarity.</div>
+          </div>
+        </div>
+        <div class="cm-success-quote">
+          <div class="cm-quote-line"></div>
+          <div class="cm-quote-inner">
+            <p>"The mystery of life isn't a problem to solve, but a reality to experience."</p>
+            <span>— Frank Herbert, Dune</span>
+          </div>
+          <div class="cm-quote-line"></div>
+        </div>
+        <button class="cm-btn-close-final" onclick="closeContactModal()">
+          Back to DuneAI →
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /cm-right -->
+</div><!-- /cm-modal -->
+
+
+<!-- ════════════════════════════
+     STYLES — scoped with cm- prefix,
+     safe to paste into any codebase
+════════════════════════════ -->
+<style>
+.cm-overlay{position:fixed;inset:0;background:rgba(5,5,8,.85);backdrop-filter:blur(14px);z-index:9000;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;}
+.cm-overlay.open{opacity:1;visibility:visible;}
+.cm-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);width:min(1060px,95vw);max-height:90vh;background:#0a0a10;border:1px solid rgba(201,168,106,.15);border-radius:8px;display:grid;grid-template-columns:300px 1fr;overflow:hidden;z-index:9001;opacity:0;visibility:hidden;transition:opacity .4s,transform .45s cubic-bezier(.34,1.56,.64,1),visibility .4s;box-shadow:0 40px 120px rgba(0,0,0,.8),0 0 60px rgba(201,168,106,.08);}
+.cm-modal.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);}
+.cm-close{position:absolute;top:1.2rem;right:1.2rem;width:34px;height:34px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,106,.15);border-radius:2px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;padding:0;transition:border-color .3s,background .3s;}
+.cm-close:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08);}
+.cm-close span{display:block;width:13px;height:1px;background:#6b6870;transition:background .3s;}
+.cm-close span:first-child{transform:rotate(45deg) translate(1px,1px);}
+.cm-close span:last-child{transform:rotate(-45deg) translate(1px,-1px);}
+.cm-close:hover span{background:#f0ede6;}
+/* LEFT */
+.cm-left{background:#050508;border-right:1px solid rgba(201,168,106,.15);padding:2.5rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;gap:2rem;position:relative;overflow:hidden;min-height:0;}
+.cm-left::before{content:'';position:absolute;bottom:-80px;left:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(201,168,106,.07) 0%,transparent 70%);pointer-events:none;}
+.cm-logo{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:.14em;color:#f0ede6;display:flex;align-items:center;gap:8px;margin-bottom:.8rem;}
+.cm-logo span{color:#C9A86A;}
+.cm-logo-dot{width:7px;height:7px;background:#C9A86A;border-radius:50%;box-shadow:0 0 10px #C9A86A;animation:cm-pulse 2s infinite;flex-shrink:0;}
+.cm-left-tagline{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;color:rgba(240,237,230,.4);line-height:1.7;text-transform:uppercase;}
+.cm-left-info{display:flex;flex-direction:column;gap:1.2rem;flex:1;}
+.cm-info-item{display:flex;align-items:flex-start;gap:.85rem;}
+.cm-info-icon{font-size:.95rem;flex-shrink:0;margin-top:2px;}
+.cm-info-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#C9A86A;margin-bottom:2px;}
+.cm-info-value{font-size:.78rem;color:#6b6870;line-height:1.5;}
+/* Orb */
+.cm-orb-wrap{position:relative;width:110px;height:110px;margin:0 auto;}
+.cm-orb-ring{position:absolute;border-radius:50%;border:1px solid rgba(201,168,106,.2);}
+.cm-orb-ring.r1{inset:0;animation:cm-spin-slow 20s linear infinite;}
+.cm-orb-ring.r2{inset:15px;border-color:rgba(91,231,255,.15);animation:cm-spin-slow 12s linear infinite reverse;}
+.cm-orb-ring.r3{inset:28px;border-color:rgba(201,168,106,.07);animation:cm-spin-slow 28s linear infinite;}
+.cm-orb-core{position:absolute;inset:32px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.12) 0%,transparent 100%);border:1px solid rgba(201,168,106,.15);display:flex;align-items:center;justify-content:center;}
+.cm-orb-text{font-family:'Orbitron',sans-serif;font-size:.5rem;font-weight:700;color:#C9A86A;letter-spacing:.15em;text-align:center;text-transform:uppercase;line-height:1.8;}
+/* RIGHT */
+.cm-right{padding:2.2rem 2.2rem 5rem 2.2rem;overflow-y:auto;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:#8a6d3e transparent;min-height:0;height:100%;max-height:90vh;box-sizing:border-box;}
+.cm-right::-webkit-scrollbar{width:3px;}
+.cm-right::-webkit-scrollbar-thumb{background:#8a6d3e;border-radius:2px;}
+/* Steps */
+.cm-steps{display:flex;align-items:center;gap:0;margin-bottom:2rem;}
+.cm-step{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.3;transition:opacity .4s;}
+.cm-step.active{opacity:1;}
+.cm-step.done{opacity:.65;}
+.cm-step-num{font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;color:#C9A86A;letter-spacing:.1em;}
+.cm-step-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#6b6870;}
+.cm-step-line{flex:1;height:1px;margin:0 .5rem;margin-bottom:12px;background:linear-gradient(90deg,#8a6d3e,rgba(201,168,106,.15));}
+/* Form steps */
+.cm-form-step{display:none;flex-direction:column;flex:1;min-height:0;}
+.cm-form-step.active{display:flex;animation:cm-fade-up .4s ease both;}
+/* Header */
+.cm-step-header{margin-bottom:1.6rem;}
+.cm-step-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#C9A86A;margin-bottom:.5rem;display:flex;align-items:center;gap:8px;}
+.cm-step-tag::before{content:'';width:18px;height:1px;background:#C9A86A;}
+.cm-step-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:700;letter-spacing:.04em;margin-bottom:.35rem;color:#f0ede6;text-transform:uppercase;}
+.cm-step-sub{color:#6b6870;font-size:.82rem;line-height:1.6;}
+/* Fields */
+.cm-fields{display:flex;flex-direction:column;gap:1.1rem;margin-bottom:1.8rem;flex:1;}
+.cm-field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.cm-field{display:flex;flex-direction:column;gap:5px;}
+.cm-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#6b6870;}
+.req{color:#C9A86A;}
+.req-opt{color:rgba(107,104,112,.55);font-style:italic;letter-spacing:0;text-transform:none;}
+.cm-input{background:rgba(255,255,255,.03);border:1px solid rgba(201,168,106,.12);border-radius:3px;padding:.7rem .9rem;color:#f0ede6;font-family:'Syne',sans-serif;font-size:.88rem;outline:none;transition:border-color .3s,background .3s,box-shadow .3s;width:100%;}
+.cm-input::placeholder{color:rgba(107,104,112,.45);}
+.cm-input:focus{border-color:#C9A86A;background:rgba(201,168,106,.04);box-shadow:0 0 20px rgba(201,168,106,.1);}
+.cm-textarea{resize:vertical;min-height:95px;}
+.cm-char-count{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:rgba(107,104,112,.45);text-align:right;margin-top:3px;}
+.cm-select-wrap{position:relative;}
+.cm-select{appearance:none;padding-right:2.2rem;cursor:pointer;}
+.cm-select option{background:#0f0f18;color:#f0ede6;}
+.cm-select-arrow{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);color:#C9A86A;font-size:.75rem;pointer-events:none;}
+/* Chips */
+.cm-service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:3px;}
+.cm-service-chip{border:1px solid rgba(201,168,106,.15);border-radius:3px;padding:.6rem .7rem;font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.06em;color:#6b6870;cursor:pointer;text-align:center;transition:all .3s;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:5px;}
+.cm-service-chip:hover{border-color:rgba(201,168,106,.35);color:#f0ede6;}
+.cm-service-chip.selected{border-color:#C9A86A;background:rgba(201,168,106,.1);color:#C9A86A;box-shadow:0 0 14px rgba(201,168,106,.15);}
+/* Privacy */
+.cm-privacy-note{display:flex;align-items:flex-start;gap:8px;padding:.7rem .9rem;background:rgba(91,231,255,.03);border:1px solid rgba(91,231,255,.08);border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:rgba(107,104,112,.65);line-height:1.6;text-transform:uppercase;}
+/* Nav row */
+.cm-nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:1.4rem;padding-bottom:1rem;border-top:1px solid rgba(201,168,106,.15);}
+.cm-btn-back{background:transparent;border:none;color:#6b6870;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:0;transition:color .3s;}
+.cm-btn-back:hover{color:#f0ede6;}
+.cm-btn-next{background:transparent;border:1px solid #C9A86A;color:#C9A86A;padding:.65rem 1.7rem;font-family:'Orbitron',sans-serif;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .3s,box-shadow .3s;}
+.cm-btn-next:hover{background:rgba(201,168,106,.1);box-shadow:0 0 25px rgba(201,168,106,.25);}
+.cm-btn-submit{background:#C9A86A;border:none;color:#050508;padding:.75rem 1.9rem;font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:box-shadow .3s,transform .2s;display:flex;align-items:center;gap:8px;}
+.cm-btn-submit:hover{box-shadow:0 0 40px rgba(201,168,106,.5);transform:translateY(-1px);}
+.cm-btn-submit:disabled{opacity:.65;transform:none;}
+.cm-spinner{width:13px;height:13px;border:2px solid rgba(0,0,0,.25);border-top-color:#050508;border-radius:50%;display:inline-block;animation:cm-spin .8s linear infinite;}
+/* SUCCESS */
+#step-success{align-items:center;text-align:center;}
+.cm-success-wrap{display:flex;flex-direction:column;align-items:center;gap:1.4rem;padding:.5rem 0;animation:cm-fade-up .6s ease both;}
+.cm-success-orb{position:relative;width:90px;height:90px;display:flex;align-items:center;justify-content:center;}
+.cm-success-ring{position:absolute;border-radius:50%;border:1px solid;}
+.cm-success-ring.sr1{inset:0;border-color:rgba(201,168,106,.3);animation:cm-spin-slow 6s linear infinite;}
+.cm-success-ring.sr2{inset:14px;border-color:rgba(91,231,255,.2);animation:cm-spin-slow 4s linear infinite reverse;}
+.cm-success-emoji{font-size:2.2rem;position:relative;z-index:1;animation:cm-float 4s ease-in-out infinite;}
+.cm-success-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:#C9A86A;display:flex;align-items:center;gap:10px;}
+.cm-success-tag::before,.cm-success-tag::after{content:'';width:22px;height:1px;background:#C9A86A;}
+.cm-success-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;letter-spacing:.04em;line-height:1.15;text-transform:uppercase;color:#f0ede6;}
+.success-gold{color:#C9A86A;}
+.cm-success-msg{color:#6b6870;font-size:.88rem;line-height:1.75;max-width:400px;}
+.cm-success-msg strong{color:#f0ede6;}
+.cm-success-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;width:100%;}
+.cm-success-card{border:1px solid rgba(201,168,106,.15);border-radius:4px;padding:1rem;background:#050508;text-align:left;transition:border-color .3s;}
+.cm-success-card:hover{border-color:rgba(201,168,106,.3);}
+.cm-sc-icon{font-size:1.1rem;margin-bottom:.45rem;}
+.cm-sc-title{font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#C9A86A;margin-bottom:.35rem;}
+.cm-sc-body{font-size:.74rem;color:#6b6870;line-height:1.6;}
+.cm-sc-body strong{color:#f0ede6;}
+.cm-success-quote{display:flex;align-items:center;gap:1rem;width:100%;max-width:420px;}
+.cm-quote-line{flex:1;height:1px;background:rgba(201,168,106,.15);}
+.cm-quote-inner{flex:4;}
+.cm-quote-inner p{font-style:italic;color:rgba(107,104,112,.55);font-size:.7rem;line-height:1.6;text-align:center;}
+.cm-quote-inner span{display:block;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:#8a6d3e;text-transform:uppercase;margin-top:4px;text-align:center;}
+.cm-btn-close-final{background:transparent;border:1px solid #C9A86A;color:#C9A86A;padding:.7rem 1.9rem;font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .3s,box-shadow .3s;}
+.cm-btn-close-final:hover{background:rgba(201,168,106,.1);box-shadow:0 0 25px rgba(201,168,106,.25);}
+/* Responsive */
+@media(max-width:768px){
+  .cm-modal{grid-template-columns:1fr;}
+  .cm-left{display:none;}
+  .cm-right{padding:2rem 1.4rem;}
+  .cm-field-row{grid-template-columns:1fr;}
+  .cm-service-grid{grid-template-columns:repeat(2,1fr);}
+  .cm-success-cards{grid-template-columns:1fr;}
+}
+/* Keyframes — prefixed to avoid conflicts */
+@keyframes cm-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.3);}}
+@keyframes cm-spin{to{transform:rotate(360deg);}}
+@keyframes cm-spin-slow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes cm-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes cm-fade-up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes cm-shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+</style>
+
+
+<!-- ════════════════════════════
+     JAVASCRIPT
+════════════════════════════ -->
+<script>
+/* ── Open / Close ── */
+function openContactModal() {
+  document.getElementById('contact-overlay').classList.add('open');
+  document.getElementById('contact-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  resetModal();
+}
+function closeContactModal() {
+  document.getElementById('contact-overlay').classList.remove('open');
+  document.getElementById('contact-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  // Option to reset modal when closed so it opens fresh next time
+  setTimeout(resetModal, 400); 
+}
+function resetModal() {
+  document.getElementById('cm-steps').style.display = 'flex';
+  goStepDirect(1);
+  // Clear form
+  ['f-name','f-email','f-company','f-role','f-desc','f-whatsapp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['f-heard','f-budget','f-timeline','f-data'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  document.querySelectorAll('.cm-service-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('char-count').textContent = '0';
+  document.getElementById('submit-label').style.display = '';
+  document.getElementById('submit-loader').style.display = 'none';
+  document.getElementById('cm-submit-btn').disabled = false;
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContactModal(); });
+
+/* ── Step navigation ── */
+let currentStep = 1;
+
+function goStep(num) {
+  if (!validateStep(currentStep)) return;
+  goStepDirect(num);
+}
+function goStepDirect(num) {
+  document.querySelectorAll('.cm-form-step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.cm-step[data-step]').forEach(s => {
+    const n = parseInt(s.dataset.step);
+    s.classList.toggle('active', n === num);
+    s.classList.toggle('done', n < num);
+  });
+  const target = document.getElementById(`step-${num}`);
+  if (target) target.classList.add('active');
+  document.querySelector('.cm-right').scrollTop = 0;
+  currentStep = num;
+}
+
+/* ── Validation ── */
+function validateStep(step) {
+  clearErrors();
+  if (step === 1) {
+    const name  = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    if (!name)                        { shakeInput('f-name', 'Please enter your name'); return false; }
+    if (!email || !email.includes('@')) { shakeInput('f-email', 'Enter a valid email address'); return false; }
+  }
+  if (step === 2) {
+    if (!document.querySelector('.cm-service-chip.selected')) { showCMToast('Please select a service type'); return false; }
+    if (!document.getElementById('f-budget').value)           { shakeInput('f-budget', 'Please select your budget'); return false; }
+  }
+  if (step === 3) {
+    const desc = document.getElementById('f-desc').value.trim();
+    if (desc.length < 20) { shakeInput('f-desc', 'Please describe your project (min 20 chars)'); return false; }
+  }
+  return true;
+}
+function clearErrors() { document.querySelectorAll('.cm-err').forEach(e => e.remove()); }
+function shakeInput(id, msg) {
+  const el = document.getElementById(id);
+  el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'cm-shake .45s ease';
+  el.style.borderColor = 'rgba(255,90,90,.6)';
+  setTimeout(() => { el.style.borderColor = ''; el.style.animation = ''; }, 700);
+  const err = document.createElement('div');
+  err.className = 'cm-err';
+  err.style.cssText = 'font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.1em;color:rgba(255,110,110,.8);text-transform:uppercase;margin-top:3px;';
+  err.textContent = msg;
+  el.closest('.cm-field').appendChild(err);
+  setTimeout(() => err.remove(), 2500);
+}
+function showCMToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f0f18;border:1px solid rgba(255,100,100,.3);color:rgba(255,200,200,.9);font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:3px;z-index:99999;white-space:nowrap;animation:cm-fade-up .3s ease both;';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+/* ── Service chip select ── */
+function selectService(el) {
+  document.querySelectorAll('.cm-service-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── Char counter ── */
+document.getElementById('f-desc').addEventListener('input', function () {
+  const len = Math.min(this.value.length, 1000);
+  document.getElementById('char-count').textContent = len;
+  document.getElementById('char-count').style.color = len >= 950 ? '#C9A86A' : '';
+  if (this.value.length > 1000) this.value = this.value.slice(0, 1000);
+});
+
+/* ── Form submit ── */
+async function submitForm() {
+  if (!validateStep(3)) return;
+  const btn = document.getElementById('cm-submit-btn');
+  document.getElementById('submit-label').style.display = 'none';
+  document.getElementById('submit-loader').style.display = 'flex';
+  btn.disabled = true;
+
+  const formData = {
+    name:      document.getElementById('f-name').value.trim(),
+    email:     document.getElementById('f-email').value.trim(),
+    company:   document.getElementById('f-company').value.trim(),
+    role:      document.getElementById('f-role').value.trim(),
+    heard:     document.getElementById('f-heard').value,
+    service:   document.querySelector('.cm-service-chip.selected')?.textContent.trim() || '',
+    budget:    document.getElementById('f-budget').value,
+    timeline:  document.getElementById('f-timeline').value,
+    desc:      document.getElementById('f-desc').value.trim(),
+    data:      document.getElementById('f-data').value,
+    whatsapp:  document.getElementById('f-whatsapp').value.trim(),
+  };
+
+  try {
+    const result = await duneSubmitContact(formData);
+
+    if (result.success) {
+      showSuccess();
+    } else {
+      showCMToast(result.message || 'Something went wrong. Try again.');
+      btn.disabled = false;
+      document.getElementById('submit-label').style.display = '';
+      document.getElementById('submit-loader').style.display = 'none';
+    }
+  } catch (err) {
+    showCMToast('Network error. Is the backend running?');
+    btn.disabled = false;
+    document.getElementById('submit-label').style.display = '';
+    document.getElementById('submit-loader').style.display = 'none';
+  }
+}
+
+function showSuccess() {
+  const firstName = document.getElementById('f-name').value.trim().split(' ')[0] || 'explorer';
+  document.getElementById('success-name').textContent = firstName;
+  document.getElementById('cm-steps').style.display = 'none';
+  document.querySelectorAll('.cm-form-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-success').classList.add('active');
+
+  // Automatically close to the landing page after seeing the success message
+  setTimeout(() => {
+    if (document.getElementById('contact-modal').classList.contains('open')) {
+      closeContactModal();
+    }
+  }, 5000);
+}
+
+/* ── Auto-wire ALL "Dune With Us" / CTA buttons ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('button, a').forEach(el => {
+    const t = el.textContent.trim().toLowerCase();
+    if (
+      t.includes('dune with us') ||
+      t.includes('book strategy call') ||
+      t.includes('start your project')
+    ) {
+      el.addEventListener('click', e => { e.preventDefault(); openContactModal(); });
+    }
+  });
+});
+</script>
+<script src="js/api.js"></script>
 </body>
 
 </html>
