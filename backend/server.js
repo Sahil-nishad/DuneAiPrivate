@@ -29,9 +29,19 @@ app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// CORS — only allow your frontend origin
+// CORS — allow either "*" or a comma-separated allowlist from env.
+const rawAllowedOrigins = process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGIN || '*';
+const allowedOrigins = rawAllowedOrigins === '*'
+  ? '*'
+  : rawAllowedOrigins.split(',').map(o => o.trim()).filter(Boolean);
+
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGIN || '*',
+  origin(origin, callback) {
+    // Allow server-to-server calls or curl/postman without Origin header.
+    if (!origin) return callback(null, true);
+    if (allowedOrigins === '*' || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));

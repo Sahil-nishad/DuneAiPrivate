@@ -8,20 +8,55 @@
 //  2. Set DUNEAI_API_URL below to your backend URL
 // ═══════════════════════════════════════════════════════
 
-const DUNEAI_API_URL = 'http://localhost:3001'; // Change to your deployed backend URL in production
-// e.g. 'https://api.duneai.in'  or  'https://duneai-backend.onrender.com'
+function normaliseBaseUrl(url) {
+  return String(url || '').trim().replace(/\/+$/, '');
+}
+
+function resolveApiBaseUrl() {
+  // Highest priority: explicit global set in HTML before this script loads.
+  if (typeof window !== 'undefined' && window.DUNEAI_API_URL) {
+    return normaliseBaseUrl(window.DUNEAI_API_URL);
+  }
+
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+
+  // Local dev uses local backend; production defaults to same-origin /api.
+  return isLocalHost
+    ? 'http://localhost:3001'
+    : normaliseBaseUrl(window.location.origin);
+}
+
+const DUNEAI_API_BASE = resolveApiBaseUrl();
+
+async function duneApiPost(path, payload) {
+  const response = await fetch(`${DUNEAI_API_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  let body = {};
+  try {
+    body = await response.json();
+  } catch (_) {
+    body = {};
+  }
+
+  if (!response.ok) {
+    const message = body.message || `Request failed with status ${response.status}`;
+    throw new Error(message);
+  }
+
+  return body;
+}
 
 /**
  * Submit the full 3-step contact form
  * Called by the ContactModal on final submit
  */
 async function duneSubmitContact(formData) {
-  const response = await fetch(`${DUNEAI_API_URL}/api/contact`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(formData),
-  });
-  return response.json();
+  return duneApiPost('/api/contact', formData);
 }
 
 /**
@@ -29,22 +64,12 @@ async function duneSubmitContact(formData) {
  * type: "strategy_call" | "start_project"
  */
 async function duneSubmitEnquiry(formData) {
-  const response = await fetch(`${DUNEAI_API_URL}/api/enquiry`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(formData),
-  });
-  return response.json();
+  return duneApiPost('/api/enquiry', formData);
 }
 
 /**
  * Subscribe to newsletter
  */
 async function duneSubscribeNewsletter(email) {
-  const response = await fetch(`${DUNEAI_API_URL}/api/newsletter`, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ email }),
-  });
-  return response.json();
+  return duneApiPost('/api/newsletter', { email });
 }
