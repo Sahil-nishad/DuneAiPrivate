@@ -2763,7 +2763,7 @@ async function submitForm() {
       document.getElementById('submit-loader').style.display = 'none';
     }
   } catch (err) {
-    showCMToast('Network error. Is the backend running?');
+    showCMToast(err?.message || 'Network error. Please try again.');
     btn.disabled = false;
     document.getElementById('submit-label').style.display = '';
     document.getElementById('submit-loader').style.display = 'none';

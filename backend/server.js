@@ -64,6 +64,9 @@ const transporter = nodemailer.createTransport({
   host:   process.env.SMTP_HOST || 'smtp.gmail.com',
   port:   parseInt(process.env.SMTP_PORT) || 587,
   secure: process.env.SMTP_SECURE === 'true', // true for 465, false for 587
+  connectionTimeout: parseInt(process.env.SMTP_CONNECTION_TIMEOUT_MS) || 10000,
+  greetingTimeout: parseInt(process.env.SMTP_GREETING_TIMEOUT_MS) || 10000,
+  socketTimeout: parseInt(process.env.SMTP_SOCKET_TIMEOUT_MS) || 20000,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -102,10 +105,17 @@ function sanitise(val) {
 
 /** Send email via transporter — returns promise */
 async function sendMail(options) {
-  return transporter.sendMail({
-    from: `"DuneAI" <${process.env.SMTP_USER}>`,
-    ...options,
-  });
+  const timeoutMs = parseInt(process.env.MAIL_SEND_TIMEOUT_MS) || 20000;
+
+  return Promise.race([
+    transporter.sendMail({
+      from: `"DuneAI" <${process.env.SMTP_USER}>`,
+      ...options,
+    }),
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`Mail send timed out after ${timeoutMs}ms`)), timeoutMs);
+    }),
+  ]);
 }
 
 
