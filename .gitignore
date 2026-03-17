@@ -1,5 +1,8 @@
+backend/.env
+backend/node_modules/
 backend/backend.stderr.log
 backend/backend.stdout.log
+files (7)/
 frontend.stderr.log
 frontend.stdout.log
 backend/render.env
